@@ -1,10 +1,10 @@
 {
-  "name": "hackathon-starter",
+  "name": "zarathoustra game-board community",
   "version": "5.1.0",
-  "description": "A boilerplate for Node.js web applications",
+  "description": "A webSite for the Zarathoustra community",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/cesarcolle/zathoustra"
   },
   "author": "Sahat Yalkabov",
   "license": "MIT",

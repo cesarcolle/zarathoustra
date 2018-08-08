@@ -111,7 +111,7 @@ exports.getPayPal = (req, res, next) => {
       cancel_url: process.env.PAYPAL_CANCEL_URL
     },
     transactions: [{
-      description: 'Hackathon Starter',
+      description: 'Zarathoustra game board',
       amount: {
         currency: 'USD',
         total: '1.99'
