@@ -13,11 +13,14 @@ const transporter = nodemailer.createTransport({
  * Contact form page.
  */
 exports.getContact = (req, res) => {
-  const unknownUser = !(req.user);
-
+  let unknownUser = !(req.user);
+  let name = req.email;
+  console.log(name);
   res.render('contact', {
-    title: 'Contact',
-    unknownUser,
+      title: 'Contact',
+      user: req.user,
+      name: req.user.email,
+      unknownUser,
   });
 };
 

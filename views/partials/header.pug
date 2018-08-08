@@ -37,3 +37,6 @@
               li.divider.dropdown-item
               li.dropdown-item
                 a(href='/logout') Logout
+            if user.role === 'admin'
+                li.nav-item
+                    a.nav-link(href="/account-management") Account Management

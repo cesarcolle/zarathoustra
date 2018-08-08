@@ -4,6 +4,8 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Contact Form
 
+    p the name of the guy is : #{user} and #{name}
+
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     if (unknownUser)

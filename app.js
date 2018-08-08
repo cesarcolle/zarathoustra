@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -53,6 +54,29 @@ mongoose.connection.on('error', (err) => {
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
+
+
+/**
+ * Feed the DB with the admin user and a common user.
+ */
+const User = require('./models/User');
+
+const user = new User({
+    email: "user@user.com",
+    password: "user",
+    role: "noob"
+});
+
+const admin = new User({
+    email: "admin@admin.com",
+    password: "admin",
+    role: "admin"
+});
+
+admin.save((err)=>{console.log(err)});
+user.save((err) => {console.log(err)});
+
+
 
 /**
  * Express configuration.
