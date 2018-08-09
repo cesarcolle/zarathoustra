@@ -14,12 +14,8 @@ const transporter = nodemailer.createTransport({
  */
 exports.getContact = (req, res) => {
   let unknownUser = !(req.user);
-  let name = req.email;
-  console.log(name);
   res.render('contact', {
       title: 'Contact',
-      user: req.user,
-      name: req.user.email,
       unknownUser,
   });
 };

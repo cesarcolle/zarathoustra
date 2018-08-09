@@ -1,0 +1,16 @@
+extends layout
+block content
+
+
+    form(method='POST')
+        .form-group
+            label "Name of the Event"
+            input(type=text, id=name, placeholder="Enter the name of the Event")
+        .form-group
+            label "Name of the Game"
+            input(type=text, id=nameOfGame)
+            label "date of the event"
+            input(type="text", id="datetimepicker")
+
+        .xdsoft_datepicker
+        .xdsoft_datetimepicker

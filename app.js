@@ -21,12 +21,13 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
+
+const upload = multer({dest: path.join(__dirname, 'uploads')});
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.example' });
+dotenv.load({path: '.env.example'});
 
 /**
  * Controllers (route handlers).
@@ -35,6 +36,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
 const gameController = require("./controllers/game");
+const eventController = require("./controllers/event")
 /**
  * API keys and Passport configuration.
  */
@@ -50,9 +52,9 @@ const app = express();
  */
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
+    console.error(err);
+    console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+    process.exit();
 });
 
 
@@ -73,9 +75,12 @@ const admin = new User({
     role: "admin"
 });
 
-admin.save((err)=>{console.log(err)});
-user.save((err) => {console.log(err)});
-
+admin.save((err) => {
+    console.log(err)
+});
+user.save((err) => {
+    console.log(err)
+});
 
 
 /**
@@ -88,55 +93,55 @@ app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public')
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public')
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressValidator());
 app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    autoReconnect: true,
-  })
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: {maxAge: 1209600000}, // two weeks in milliseconds
+    store: new MongoStore({
+        url: process.env.MONGODB_URI,
+        autoReconnect: true,
+    })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
-    lusca.csrf()(req, res, next);
-  }
+    if (req.path === '/api/upload') {
+        next();
+    } else {
+        lusca.csrf()(req, res, next);
+    }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
 app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
+    res.locals.user = req.user;
+    next();
 });
 app.use((req, res, next) => {
-  // After successful login, redirect back to the intended page
-  if (!req.user &&
-    req.path !== '/login' &&
-    req.path !== '/signup' &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)) {
-    req.session.returnTo = req.originalUrl;
-  } else if (req.user &&
-    (req.path === '/account' || req.path.match(/^\/api/))) {
-    req.session.returnTo = req.originalUrl;
-  }
-  next();
+    // After successful login, redirect back to the intended page
+    if (!req.user &&
+        req.path !== '/login' &&
+        req.path !== '/signup' &&
+        !req.path.match(/^\/auth/) &&
+        !req.path.match(/\./)) {
+        req.session.returnTo = req.originalUrl;
+    } else if (req.user &&
+        (req.path === '/account' || req.path.match(/^\/api/))) {
+        req.session.returnTo = req.originalUrl;
+    }
+    next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge: 31557600000}));
 
 /**
  * My proper API
@@ -144,7 +149,6 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 app.get("/games", gameController.getGames);
 app.post("/games/add", gameController.addGame);
-
 
 
 /**
@@ -165,29 +169,33 @@ app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 
 
-
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+/**
+ * Events
+ * */
 
+app.get("/event", passportConfig.isAuthenticated, eventController.getEvents);
+app.get("/event/add", passportConfig.isAuthenticated, eventController.addEvent);
 
 /**
  * Error Handler.
  */
 if (process.env.NODE_ENV === 'development') {
-  // only use in development
-  app.use(errorHandler());
+    // only use in development
+    app.use(errorHandler());
 }
 
 /**
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
-  console.log('  Press CTRL-C to stop\n');
+    console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
+    console.log('  Press CTRL-C to stop\n');
 });
 
 module.exports = app;

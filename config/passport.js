@@ -6,6 +6,12 @@ const { OAuth2Strategy } = require('passport-oauth');
 
 const User = require('../models/User');
 
+
+
+
+
+
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
