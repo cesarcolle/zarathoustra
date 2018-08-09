@@ -1,16 +1,49 @@
 extends layout
 block content
 
+    .container
+        form(method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
 
-    form(method='POST')
-        .form-group
-            label "Name of the Event"
-            input(type=text, id=name, placeholder="Enter the name of the Event")
-        .form-group
-            label "Name of the Game"
-            input(type=text, id=nameOfGame)
-            label "date of the event"
-            input(type="text", id="datetimepicker")
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='nameOfGame') Name
+                .col-md-8
+                    input.form-control(type='text', name='name', id='nameOfGame', autofocus=true, placeholder="Enter the name of the game")
+                    .small pick an awesome name
 
-        .xdsoft_datepicker
-        .xdsoft_datetimepicker
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='localisation') localisation of the event
+                .col-md-8
+                    input(id='localisation').form-control(type='text', name='localisation')
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='maxPlayer') max player
+                .col-md-8
+                    // TODO : be more generic please.
+                    select(class='form-control', name='maxPlayer', id='maxPlayer')
+                        option(value=2) 2
+                        option(value=3) 3
+                        option(value=4) 4
+                        option(value=5) 5
+                        option(value=6) 6
+                        option(value=7) 7
+
+
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='datetimepicker') date Of the Event
+                .col-md-8
+                    input(id='datetimepicker').form-control(type='text', name='day')
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='timepicker') time Of the Event
+                .col-md-8
+                    input(id='timepicker').form-control(type='text', name="startHour")
+
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='information') Please describe the issue or your suggestion
+                .col-md-8
+                    textarea.form-control(name='information', id='information', rows='7')
+
+            .form-group
+                .offset-md-2.col-md-8.p-1
+                    button.btn.btn-primary(type='submit')
+                        i.far.fa-gamepad
+                        | Send

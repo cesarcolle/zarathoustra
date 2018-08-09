@@ -36,7 +36,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
 const gameController = require("./controllers/game");
-const eventController = require("./controllers/event")
+const eventController = require("./controllers/event");
 /**
  * API keys and Passport configuration.
  */
@@ -180,8 +180,8 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
  * */
 
 app.get("/event", passportConfig.isAuthenticated, eventController.getEvents);
-app.get("/event/add", passportConfig.isAuthenticated, eventController.addEvent);
-
+app.get("/event/add", passportConfig.isAuthenticated, eventController.getAddEvents);
+app.post("/event/add", passportConfig.isAuthenticated,eventController.addEvent);
 /**
  * Error Handler.
  */

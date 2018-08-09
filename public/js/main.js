@@ -1,7 +1,8 @@
 
+import TinyDatePicker from 'tiny-date-picker';
 
 $(document).ready(() => {
 
-  // Place JavaScript code here...
+    TinyDatePicker(document.querySelector('datetimepicker'));
 
 });

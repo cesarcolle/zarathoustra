@@ -21,12 +21,10 @@ const eventSchema = mongoose.Schema({
     playerInterest: Number,
     maxPlayer: Number,
     playerComing: Number,
-    location: String,
-    gamePlayed : String,
+    localisation: String,
     status : String,
     information : String,
-    startHour: {type: Number, max: 24, min: 0},
-    endHour: {type: Number, max: 24, min: 0},
+    startHour: String,
     resume : EventResume
 });
 

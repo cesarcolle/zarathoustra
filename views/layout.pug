@@ -9,6 +9,10 @@ html
         title #{title} - Zarathoustra
         link(rel='shortcut icon', href='/favicon.png')
         link(rel='stylesheet', href='/css/main.css')
+        link(rel='stylesheet', href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css")
+
+        link(rel='stylesheet', href='/css/lib/jquery.timepicker.css')
+
 
     body
         include partials/header
@@ -22,9 +26,21 @@ html
         script(src='/js/lib/jquery.min.js')
         script(src='/js/lib/bootstrap.min.js')
         script(src='/js/lib/popper.min.js')
-
         script(src='/js/main.js')
+        script(src='/js/lib/jquery.timepicker.min.js')
+        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+
+
         script.
+            $(function () {
+                $("#datetimepicker").datepicker({
+                    dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+                    minDate : new Date(),
+                });
+            })
+            $('#timepicker').timepicker();
+
+            ;
         // Google Analytics: change UA-XXXXX-X to be your site's ID
         script.
             (function (i, s, o, g, r, a, m) {

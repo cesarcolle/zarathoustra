@@ -3,6 +3,11 @@ block content
     .p
     if canManageCalendar
         a.btn.btn-raised(href='/event/add', role='button') Manage Calendar
+
+    each event in events
+        li= event
+
+    .p today #{day}
     .align-items-md-center
         .card
             .card-header LUNDI
