@@ -32,10 +32,11 @@ html
 
 
         script.
+            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
             $(function () {
                 $("#datetimepicker").datepicker({
                     dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
-                    minDate : new Date(),
+                    minDate : new Date()
                 });
             })
             $('#timepicker').timepicker();

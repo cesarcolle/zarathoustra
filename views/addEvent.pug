@@ -6,10 +6,15 @@ block content
             input(type='hidden', name='_csrf', value=_csrf)
 
             .form-group.row
-                label(class='col-md-2 col-form-label font-weight-bold', for='nameOfGame') Name
+                label(class='col-md-2 col-form-label font-weight-bold', for='nameOfEvent') Name
                 .col-md-8
-                    input.form-control(type='text', name='name', id='nameOfGame', autofocus=true, placeholder="Enter the name of the game")
+                    input.form-control(type='text', name='name', id='nameOfEvent', autofocus=true, placeholder="Enter the name of the game")
                     .small pick an awesome name
+            .form-group.row
+                label(class='col-md-2 col-form-label font-weight-bold', for='nameOfGame') Name of the game
+                .col-md-8
+                    input.form-control(type='text', name='nameOfGame', id='nameOfGame')
+                    .small enter the name of the game !
 
             .form-group.row
                 label(class='col-md-2 col-form-label font-weight-bold', for='localisation') localisation of the event

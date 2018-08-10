@@ -3,40 +3,15 @@ block content
     .p
     if canManageCalendar
         a.btn.btn-raised(href='/event/add', role='button') Manage Calendar
-
-    each event in events
-        li= event
-
-    .p today #{day}
-    .align-items-md-center
-        .card
-            .card-header LUNDI
-            .card-body
-                .h5.card-title special title
-                .p.card-text this is the text
-                .a.btn.btn-default
-        .card
-            .card-header LUNDI
-            .card-body
-                .h5.card-title special title
-                .p.card-text this is the text
-                .a.btn.btn-default
-        .card
-            .card-header LUNDI
-            .card-body
-                .h5.card-title special title
-                .p.card-text this is the text
-                .a.btn.btn-default
-        .card
-            .card-header LUNDI
-            .card-body
-                .h5.card-title special title
-                .p.card-text this is the text
-                .a.btn.btn-default
-        .card
-            .card-header LUNDI
-            .card-body
-                .h5.card-title special title
-                .p.card-text this is the text
-                .a.btn.btn-default
+    .card-columns
+        each event in eventsOfWeek
+            .card(style="max-width: 18rem;")
+                .h3.card-header.text-center #{event.date.getDate()}/#{event.date.getMonth() + 1}/#{event.date.getFullYear()}
+                each eventInDay in event.events
+                    .card
+                        .h5.card-title Name : #{eventInDay.nameOfEvent}
+                        .h6.card-title Game name : #{eventInDay.gameName}
+                        .h6.card-title Place left : #{eventInDay.maxPlayer - eventInDay.playerComing}
+                        .h6.card-title localisation : #{eventInDay.localisation}
+                        .card-text #{eventInDay.information}
 

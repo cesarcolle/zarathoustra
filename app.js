@@ -76,10 +76,9 @@ const admin = new User({
 });
 
 admin.save((err) => {
-    console.log(err)
+
 });
 user.save((err) => {
-    console.log(err)
 });
 
 
@@ -182,6 +181,9 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get("/event", passportConfig.isAuthenticated, eventController.getEvents);
 app.get("/event/add", passportConfig.isAuthenticated, eventController.getAddEvents);
 app.post("/event/add", passportConfig.isAuthenticated,eventController.addEvent);
+app.post("/event/enroll", passportConfig.isAuthenticated,eventController.addEvent);
+app.get("/event/enroll/:game", passportConfig.isAuthenticated,eventController.enrollEvent);
+
 /**
  * Error Handler.
  */
