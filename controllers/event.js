@@ -1,9 +1,5 @@
 const EventGame = require("../models/Event");
-
-const scales = {
-    "week": 7,
-    "month": 30
-};
+const EventPlayers = require("../models/Event");
 
 const gifts = {
     "roulage": 3,
@@ -40,15 +36,19 @@ exports.getEvents = (req, res, next) => {
         if (err) {
             return next(err)
         }
+
+        const inTheGame = {};
         events.forEach(event => {
-            console.log("I push from event to week");
+            event.players.forEach(eventPlayer => {
+                if (eventPlayer.email === req.user.email){
+                    inTheGame[event._id] = true;
+                }
+            });
             week[event.day.getDay()].events.push(event);
         });
         const eventWeek = [];
         Object.keys(week).forEach(weekDay => {
-            console.log(week[weekDay].date + " " + week[weekDay].events.length);
             if (week[weekDay].events.length > 0){
-                console.log("I push element...");
                 eventWeek.push(week[weekDay]);
 
             }
@@ -58,7 +58,9 @@ exports.getEvents = (req, res, next) => {
         res.render("eventGame", {
             canManageCalendar: canManage,
             day: today.getDay().toString(),
-            eventsOfWeek: eventWeek
+            eventsOfWeek: eventWeek,
+            eventEnrolled : inTheGame
+
         });
     });
 }
@@ -81,7 +83,6 @@ exports.addEvent = (req, res, next) => {
         return res.redirect('/event/add');
     }
     // TODO : checking to be complete
-    console.log("I receive the date as " + req.body.day + " it became :: " + new Date(req.body.day));
     const newEvent = new EventGame({
         nameOfEvent: req.body.name,
         gameName : req.body.nameOfGame,
@@ -93,23 +94,33 @@ exports.addEvent = (req, res, next) => {
         localisation: req.body.localisation,
         status: "IN CREATION",
         information: req.body.information,
-
-        resume: []
+        players: []
     });
-
-    console.log("I create " + newEvent);
-
     newEvent.save((err) => console.log(err));
     res.redirect("/event")
 };
-exports.enrollInTheEvent = (req, res, next) => {
+exports.getEnrollInTheEvent = (req, res, next) => {
+    EventGame.find({_id : req.params.game}, (err, event) => {
+        if (err) return err;
+        res.render('enroll', {eventId : req.params.game, eventEnrolled : event});
+    });
 
 };
 
 
-exports.enrollEvent = (req, res, next) => {
-
-
+exports.postEnrollEvent = (req, res, next) => {
+    const eventPlayer = {
+        email : req.user.email,
+        nickname : req.user.nickname,
+        role : req.user.role
+    };
+    EventGame.update({_id : req.body.id}, {
+        $push : {players : eventPlayer} ,
+        $inc : {playerComing : 1} },
+        function (err, tank) {
+            if (err) return handleError(err);
+                res.redirect("/event")
+        });
 };
 
 

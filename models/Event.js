@@ -1,20 +1,18 @@
 const mongoose = require('mongoose');
 
 
-const PlayerResume = {
-    emailPlayer: String,
+const EventPlayers = {
+    email: String,
+    nickname: String,
+    role: String,
     note: {type: Number, max: 5, min: 0},
     feedBack: String,
-};
-
-const EventResume = {
-    playersResume: [PlayerResume],
-    otherNote : String
+    otherNote: String
 };
 
 
 const eventSchema = mongoose.Schema({
-    nameOfEvent : String,
+    nameOfEvent: String,
     day: Date,
     minimumGrade: String,
     gameName: String,
@@ -22,13 +20,14 @@ const eventSchema = mongoose.Schema({
     maxPlayer: Number,
     playerComing: Number,
     localisation: String,
-    status : String,
-    information : String,
+    status: String,
+    information: String,
     startHour: String,
-    resume : EventResume
+    players: [EventPlayers]
 });
-
 
 const Event = mongoose.model('Event', eventSchema);
 
+
+module.exports = EventPlayers;
 module.exports = Event;

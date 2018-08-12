@@ -1,0 +1,25 @@
+extends layout
+
+
+block content
+    .text-center.h5 Let's enroll to the #{eventEnrolled.nameOfEvent}
+
+    .p A little remenbering of the event :
+
+    .text-secondary Enrolling to the gamers den need gift for the lords. in order to have better moment, it's pleaseant to have something to eat, smoke, drink !
+    .text-left Do you want to bring gift ?
+    form(method='POST', target="/event/enroll", action="/event/enroll")
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='id', value=eventId)
+        .form-group
+            .label(for="gift") choose your gift
+             select(class='form-control', id='gift', name='gift')
+                option smile
+                option wine
+                option rolling
+        .form-group
+            .offset-md-2.col-md-8.p-1
+                button.btn.btn-primary(type='submit', value='/event/enroll')
+                    i.far.fa-calendar.fa-sm
+                    | Enroll !
+

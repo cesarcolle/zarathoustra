@@ -1,6 +1,5 @@
 extends layout
 block content
-    .p
     if canManageCalendar
         a.btn.btn-raised(href='/event/add', role='button') Manage Calendar
     .card-columns
@@ -9,9 +8,14 @@ block content
                 .h3.card-header.text-center #{event.date.getDate()}/#{event.date.getMonth() + 1}/#{event.date.getFullYear()}
                 each eventInDay in event.events
                     .card
-                        .h5.card-title Name : #{eventInDay.nameOfEvent}
-                        .h6.card-title Game name : #{eventInDay.gameName}
-                        .h6.card-title Place left : #{eventInDay.maxPlayer - eventInDay.playerComing}
-                        .h6.card-title localisation : #{eventInDay.localisation}
-                        .card-text #{eventInDay.information}
-
+                        .card-body
+                            .h5.card-title.text-center #{eventInDay.nameOfEvent}
+                            .h6.card-text Game name : #{eventInDay.gameName}
+                            .h6.card-text Place left : #{eventInDay.maxPlayer - eventInDay.playerComing}
+                            .h6.card-text localisation : #{eventInDay.localisation}
+                            .small.card-text #{eventInDay.information}
+                            .text-center
+                                if  eventEnrolled[eventInDay._id]
+                                    .text-secondary enrolled.
+                                else
+                                    a.btn.btn-primary(href='/event/enroll/' + eventInDay._id, role='button') enroll »
