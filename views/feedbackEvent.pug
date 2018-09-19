@@ -3,29 +3,32 @@ extends layout
 
 block content
 
-    .text-center.h5 Give the feedback to the game at: #{gameDescription.localisation} of the #{gameDescription.day}
+    .text-center.h5 Give the feedback to the game at: #{gameDescription.localisation} of the #{gameDescription.day.getDate()}/#{gameDescription.day.getMonth() + 1}/#{gameDescription.day.getFullYear()}
+    .card-columns
+        each playersEvent in usersEvent
+            .card(style="max-width: 18rem;")
+                .h5.card-header.text-center #{playersEvent.email}
+                    .h7.card-title.text-center #{playersEvent.nickname}
+                        .card
+                            .card-body
+                                form(method='POST', target="/event/feedback", action="/event/feedback")
+                                    input(type='hidden', name='_csrf', value=_csrf)
+                                    input(type='hidden', name='playerId', value=playersEvent.email)
+                                    .text-left
+                                        .form-group
+                                            .h8.label(for="rank") ranking
+                                                - var n = 0
+                                                select(class='form-control', id='rank', name='rank')
+                                                    while n < gameDescription.playerComing
+                                                        option rank : #{n++}
 
-    each playersEvent in usersEvent
-        .card(style="max-width: 18rem;")
-            .h3.card-header.text-center feedback for : #{playersEvent.nickname}
-                .h7.text-center #{playersEvent.email}
-                    .card-body
-                        form(method='POST', target="/event/feedback", action="/event/feedback")
-                            input(type='hidden', name='_csrf', value=_csrf)
-                            input(type='hidden', name='playerId', value=playersEvent.email)
-                            .form-group
-                                .label(for="rank") ranking
-                                    select(class='form-control', id='rank', name='rank')
-                                    each pNb in gamesDescription.playerComing
-                                        option rank : #{pNB}
-
-                                .label(for='bonus') bonus
-                                    select(class='form-control', id='bonus', name='bonus')
-                                    option nothing
-                                    option taverne
-                                    option palais
-                        .form-group
-                            .offset-md-2.col-md-8.p-1
-                                button.btn.btn-primary(type='submit', value='/event/feedback')
-                                    i.far.fa-calendar.fa-sm
-                                    | feedback!
+                                            .h8.label(for='bonus') bonus
+                                                select(class='form-control', id='bonus', name='bonus')
+                                                    option nothing
+                                                     option taverne
+                                                    option palais
+                                .form-group
+                                    .offset-md-2.col-md-8.p-1
+                                        button.btn.btn-primary(type='submit', value='/event/feedback')
+                                            i.far.fa-calendar.fa-sm
+                                            | feedback!

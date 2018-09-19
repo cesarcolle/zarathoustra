@@ -120,7 +120,7 @@ exports.postEnrollEvent = (req, res, next) => {
 };
 exports.getFeedBackEvent = (req, res, next) => {
     const idEvent = req.params.game;
-    EventGame.find({_id : idEvent}, (err, event) => {
+    EventGame.findOne({_id : idEvent}, (err, event) => {
         console.log("event finded : " + event);
         if (err) return err;
         res.render('feedbackEvent', {usersEvent : event.players, gameDescription : event})
