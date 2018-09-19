@@ -37,6 +37,7 @@ const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
 const gameController = require("./controllers/game");
 const eventController = require("./controllers/event");
+
 /**
  * API keys and Passport configuration.
  */
@@ -80,6 +81,10 @@ admin.save((err) => {
 });
 user.save((err) => {
 });
+
+/**
+ * Create authorisation
+ * */
 
 
 /**
@@ -161,8 +166,9 @@ app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
+
+app.get('/signup',passportConfig.isAuthorizedToAcces, userController.getSignup);
+app.post('/signup',passportConfig.isAuthorizedToAcces, userController.postSignup);
 
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
@@ -183,9 +189,12 @@ app.get("/event", passportConfig.isAuthenticated, eventController.getEvents);
 app.get("/event/add", passportConfig.isAuthenticated, eventController.getAddEvents);
 app.post("/event/add", passportConfig.isAuthenticated,eventController.addEvent);
 
-app.get("/event/enroll/:game", passportConfig.isAuthenticated,eventController.getEnrollInTheEvent);
+app.get("/event/enroll/:game", passportConfig.isAuthenticated, eventController.getEnrollInTheEvent);
 app.post("/event/enroll", passportConfig.isAuthenticated,eventController.postEnrollEvent);
 
+app.get("/event/feedback", passportConfig.isAuthorizedToAcces, eventController.getFeedBackGeneral);
+app.get("/event/feedback/:game", passportConfig.isAuthorizedToAcces, eventController.getFeedBackEvent);
+app.get("/event/game/:game", passportConfig.isAuthorizedToAcces, eventController.getFinishGame);
 /**
  * Error Handler.
  */

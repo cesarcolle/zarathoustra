@@ -1,7 +1,9 @@
 extends layout
 block content
     if canManageCalendar
-        a.btn.btn-raised(href='/event/add', role='button') Manage Calendar
+        a.btn.btn-primary(href='/event/add', role='button') Manage Calendar
+        a.btn.btn-primary(href='/event/feedback', role='button') Manage Feedback
+
     .card-columns
         each event in eventsOfWeek
             .card(style="max-width: 18rem;")
@@ -19,3 +21,6 @@ block content
                                     .text-secondary enrolled.
                                 else
                                     a.btn.btn-primary(href='/event/enroll/' + eventInDay._id, role='button') enroll »
+
+                                if canManageCalendar
+                                    a.btn.btn-primary(href='/event/game/' + eventInDay._id, role='button') finish »

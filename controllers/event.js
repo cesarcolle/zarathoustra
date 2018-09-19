@@ -32,12 +32,13 @@ exports.getEvents = (req, res, next) => {
 
     const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-    EventGame.find({day: {$gte: new Date(), $lte: nextWeek}}, function (err, events) {
+    EventGame.find({day: {$gte: new Date()}}, function (err, events) {
         if (err) {
             return next(err)
         }
 
         const inTheGame = {};
+        // if the event is finished : events = events.filter(evnt => evnt.status != "DONE");
         events.forEach(event => {
             event.players.forEach(eventPlayer => {
                 if (eventPlayer.email === req.user.email){
@@ -48,9 +49,8 @@ exports.getEvents = (req, res, next) => {
         });
         const eventWeek = [];
         Object.keys(week).forEach(weekDay => {
-            if (week[weekDay].events.length > 0){
+            if ( week[weekDay].events.length > 0){
                 eventWeek.push(week[weekDay]);
-
             }
         });
 
@@ -60,7 +60,6 @@ exports.getEvents = (req, res, next) => {
             day: today.getDay().toString(),
             eventsOfWeek: eventWeek,
             eventEnrolled : inTheGame
-
         });
     });
 }
@@ -104,10 +103,7 @@ exports.getEnrollInTheEvent = (req, res, next) => {
         if (err) return err;
         res.render('enroll', {eventId : req.params.game, eventEnrolled : event});
     });
-
 };
-
-
 exports.postEnrollEvent = (req, res, next) => {
     const eventPlayer = {
         email : req.user.email,
@@ -122,7 +118,39 @@ exports.postEnrollEvent = (req, res, next) => {
                 res.redirect("/event")
         });
 };
+exports.getFeedBackEvent = (req, res, next) => {
+    const idEvent = req.params.game;
+    EventGame.find({_id : idEvent}, (err, event) => {
+        console.log("event finded : " + event);
+        if (err) return err;
+        res.render('feedbackEvent', {usersEvent : event.players, gameDescription : event})
+    })
+};
 
+
+exports.getFeedBackGeneral = (req, res, next) => {
+    EventGame.find({status : {$eq : "DONE"}}, (err, event) => {
+        if (err) return err;
+        console.log("find : " + event);
+        res.render('feedbackGeneral', {events : event})
+    })
+};
+
+exports.postFeedBackEvent = (req, res, next) => {
+  const idGame = req.body.id;
+    console.log(req.body)
+};
+
+exports.getFinishGame = (req, res, next) => {
+    console.log("finsih the game : " + req.params.game);
+    EventGame.update({_id: req.params.game}, {
+            status: "DONE"
+        },
+        function (err, tank) {
+            if (err) return handleError(err);
+            res.redirect("/event")
+        });
+}
 
 
 

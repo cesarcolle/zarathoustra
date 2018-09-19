@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const statusEvent = [ { "CREATED" : 1}, {"IN PROGRESS" : 2}, {"DONE" : 3}, {"FEEDBACKED" : 4}];
 
 
 const EventPlayers = {

@@ -1,0 +1,11 @@
+extends layout
+
+
+block content
+    if (!events)
+        .text-center All the game have been feedbacked ...
+    else
+        each eventNoFeedbacked in events
+            .card(style="max-width: 18rem;")
+                .card-title Event no feedbacked #{eventNoFeedbacked.nameOfEvent} of #{eventNoFeedbacked.day.getDate()}/#{eventNoFeedbacked.day.getMonth() + 1}/#{eventNoFeedbacked.day.getFullYear()}
+                    a.btn.btn-primary(href='/event/feedback/' + eventNoFeedbacked._id, role='button') GiveFeedBack »
