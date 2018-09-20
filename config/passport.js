@@ -51,9 +51,9 @@ exports.isAuthenticated = (req, res, next) => {
 };
 
 const adminPath = [{path : "/signup"}, {path: "/event/feedback"}, {path: "/event/game"}];
+
 exports.isAuthorizedToAcces = (req, res, next) => {
     if (req.isAuthenticated()) {
-        console.log(req.user + req.path.toString());
         if ((req.user.role === "Maître" || req.user.role === "admin"))  {
             return next();
         }

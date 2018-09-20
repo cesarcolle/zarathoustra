@@ -11,7 +11,7 @@ block content
                     .h7.card-title.text-center #{playersEvent.nickname}
                         .card
                             .card-body
-                                form(method='POST', target="/event/feedback", action="/event/feedback")
+                                form(method='POST', action="/event/feedback/")
                                     input(type='hidden', name='_csrf', value=_csrf)
                                     input(type='hidden', name='playerId', value=playersEvent.email)
                                     input(type='hidden', name='gameId', value=gameDescription._id)
@@ -33,6 +33,6 @@ block content
                                                     option palais
                                     .form-group
                                         .offset-md-2.col-md-8.p-1
-                                            button.btn.btn-primary(type='submit', value='/event/feedback')
+                                            button.btn.btn-primary(type='submit', value='/event/feedback/')
                                                 i.far.fa-sm
                                                 | feedback!

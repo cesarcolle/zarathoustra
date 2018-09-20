@@ -8,6 +8,12 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
+const mailZarathoustra = process.env.ZARATHOUSTRA_MAIL;
+
+//  625601361624-nsqtd4se4k1snuuoedirt421m4gcjp6q.apps.googleusercontent.com
+//  JVID0LbX9Xu2wpfYjCJlp_Hb
+
 /**
  * GET /contact
  * Contact form page.
@@ -49,7 +55,7 @@ exports.postContact = (req, res) => {
   }
 
   const mailOptions = {
-    to: 'your@email.com',
+    to: mailZarathoustra,
     from: `${fromName} <${fromEmail}>`,
     subject: 'Contact Form | Zarathoustra',
     text: req.body.message

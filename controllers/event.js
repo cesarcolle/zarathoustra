@@ -1,5 +1,5 @@
 const EventGame = require("../models/Event");
-const EventPlayers = require("../models/Event");
+const User = require('../models/User');
 
 const gifts = {
     "roulage": 3,
@@ -9,6 +9,9 @@ const gifts = {
 
 
 exports.getEvents = (req, res, next) => {
+
+
+    newCategories(10);
     var today = new Date();
     const week = {
         0: {date: "", events: []},
@@ -157,33 +160,66 @@ const bonus = {
 };
 
 const status = {
-
-
+    "esclave" : -2,
+    "coni" : 0,
+    "golum" : 2,
+    "gueux" : 4,
+    "pebron" : 7,
+    "paysan" : 10,
+    "ecuyer" : 14,
+    "adorateur" : 19,
+    "eclaireur" : 24,
+    "hoplite" : 30,
+    "samourai" : 36,
+    "padawan" : 42,
+    "paladin" : 49,
+    "seigneur" : 56,
+    "maitre" : 75
 };
 
+function newCategories(gain) {
+    return Object.keys(status)
+        .map(s => Array(s, status[s]))
+        .map(s => [s[0], s[1] - gain])
+            .filter(s => s[1] <= 0)
+        .map(s => [s[0], Math.abs(s[1])] )
+        .reduce((prev, curr) => prev[1] < curr[1] ? prev : curr)[1]
+
+}
 
 exports.postFeedBackEvent = (req, res, next) => {
+    console.log("POST FEEDBACK EVENT")
   const idGame = req.body.gameId;
   const idPlayer = req.body.playerId;
   const rank = req.body.rank;
   const maxplayer = req.body.playerGameNumber;
   const bonusPlayer = req.body.bonus;
   const scorePlayer = rules[maxplayer][rank] + bonus[bonusPlayer];
+  console.log("find the user to update ..." + idPlayer);
+  User.find({email : idPlayer}, (err, player) => {
+      if (err) return err;
+      var statusPlayer = player.status;
+      const newScore = player.score + scorePlayer;
+      console.log("new score : " + newScore);
 
-  console.log("postFeedBackEvent");
-  console.log(req.body);
+      if (newScore < status["maitre"] && newScore >= 0){
+          statusPlayer = newCategories(newScore)
+      }
+      console.log("Update score and change status ...");
 
-
-
-  Users.update({_id : idPlayer},{
-    $incr : {score : scorePlayer}
-  })
-
-
+      User.update({_id : idPlayer},{
+          $incr : {score : scorePlayer},
+          status : statusPlayer
+      });
+      console.log("remove the user from the game because his add feedback");
+      // feedback provided.
+      EventGame.update({_id : idGame}, {$pull : {players : {email : player.email}}});
+      console.log("redirect to ");
+      res.redirect("/event/feedback/")
+  });
 };
 
 exports.getFinishGame = (req, res, next) => {
-    console.log("finsih the game : " + req.params.game);
     EventGame.update({_id: req.params.game}, {
             status: "DONE"
         },
