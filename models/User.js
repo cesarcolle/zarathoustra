@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
     role: String,
     nickname : String,
+    score : Number,
     profile: {
         name: String,
         gender: String,

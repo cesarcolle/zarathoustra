@@ -14,21 +14,25 @@ block content
                                 form(method='POST', target="/event/feedback", action="/event/feedback")
                                     input(type='hidden', name='_csrf', value=_csrf)
                                     input(type='hidden', name='playerId', value=playersEvent.email)
+                                    input(type='hidden', name='gameId', value=gameDescription._id)
+                                    input(type='hidden', name='playerGameNumber', value=gameDescription.playerComing)
+
                                     .text-left
                                         .form-group
                                             .h8.label(for="rank") ranking
                                                 - var n = 0
                                                 select(class='form-control', id='rank', name='rank')
+                                                    option rank
                                                     while n < gameDescription.playerComing
-                                                        option rank : #{n++}
+                                                        option #{n++}
 
                                             .h8.label(for='bonus') bonus
                                                 select(class='form-control', id='bonus', name='bonus')
                                                     option nothing
-                                                     option taverne
+                                                    option taverne
                                                     option palais
-                                .form-group
-                                    .offset-md-2.col-md-8.p-1
-                                        button.btn.btn-primary(type='submit', value='/event/feedback')
-                                            i.far.fa-calendar.fa-sm
-                                            | feedback!
+                                    .form-group
+                                        .offset-md-2.col-md-8.p-1
+                                            button.btn.btn-primary(type='submit', value='/event/feedback')
+                                                i.far.fa-sm
+                                                | feedback!

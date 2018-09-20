@@ -195,6 +195,7 @@ app.post("/event/enroll", passportConfig.isAuthenticated,eventController.postEnr
 app.get("/event/feedback", passportConfig.isAuthorizedToAcces, eventController.getFeedBackGeneral);
 app.get("/event/feedback/:game", passportConfig.isAuthorizedToAcces, eventController.getFeedBackEvent);
 app.get("/event/game/:game", passportConfig.isAuthorizedToAcces, eventController.getFinishGame);
+app.post("/event/feedback", passportConfig.isAuthorizedToAcces, eventController.postFeedBackEvent);
 /**
  * Error Handler.
  */

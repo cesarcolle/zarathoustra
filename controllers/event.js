@@ -110,7 +110,16 @@ exports.postEnrollEvent = (req, res, next) => {
         nickname : req.user.nickname,
         role : req.user.role
     };
+    EventGame.find({_id : req.body.id}, (err, event) => {
+        if (event.players) {
+            if (event.players.find(p => p.email === req.user.email)) {
+                req.flash('bad', {msg: 'you cannot be enrolled twice ....'});
+                res.redirect('/account');
+            }
+        }
+    });
     EventGame.update({_id : req.body.id}, {
+
         $push : {players : eventPlayer} ,
         $inc : {playerComing : 1} },
         function (err, tank) {
@@ -118,27 +127,59 @@ exports.postEnrollEvent = (req, res, next) => {
                 res.redirect("/event")
         });
 };
+exports.getFeedBackGeneral = (req, res, next) => {
+    EventGame.find({status : {$eq : "DONE"}}, (err, event) => {
+        if (err) return err;
+        res.render('feedbackGeneral', {events : event})
+    })
+};
 exports.getFeedBackEvent = (req, res, next) => {
     const idEvent = req.params.game;
     EventGame.findOne({_id : idEvent}, (err, event) => {
-        console.log("event finded : " + event);
         if (err) return err;
+        console.log(event.players);
         res.render('feedbackEvent', {usersEvent : event.players, gameDescription : event})
     })
 };
 
+const rules = {
+    7 : [8, 5, 2, 1,0, 0, -3],
+    5 : [5, 2, 1,0, -1],
+    6 : [5, 2, 1,0, -1, -2],
+    4 : [4, 2, 1, -1],
+    3 : [2, 1, -1],
+    2 : [1, -1]};
 
-exports.getFeedBackGeneral = (req, res, next) => {
-    EventGame.find({status : {$eq : "DONE"}}, (err, event) => {
-        if (err) return err;
-        console.log("find : " + event);
-        res.render('feedbackGeneral', {events : event})
-    })
+const bonus = {
+    "nothing" : 0,
+    "taverne" : 1,
+    "palais" : 2
 };
 
+const status = {
+
+
+};
+
+
 exports.postFeedBackEvent = (req, res, next) => {
-  const idGame = req.body.id;
-    console.log(req.body)
+  const idGame = req.body.gameId;
+  const idPlayer = req.body.playerId;
+  const rank = req.body.rank;
+  const maxplayer = req.body.playerGameNumber;
+  const bonusPlayer = req.body.bonus;
+  const scorePlayer = rules[maxplayer][rank] + bonus[bonusPlayer];
+
+  console.log("postFeedBackEvent");
+  console.log(req.body);
+
+
+
+  Users.update({_id : idPlayer},{
+    $incr : {score : scorePlayer}
+  })
+
+
 };
 
 exports.getFinishGame = (req, res, next) => {
@@ -150,7 +191,7 @@ exports.getFinishGame = (req, res, next) => {
             if (err) return handleError(err);
             res.redirect("/event")
         });
-}
+};
 
 
 
