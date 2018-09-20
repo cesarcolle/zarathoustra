@@ -50,6 +50,11 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
     });
 };
 
+userSchema.method.imageRole = function imagePath() {
+  return `images/${this.role}.png`
+};
+
+
 /**
  * Helper method for getting user's gravatar.
  */

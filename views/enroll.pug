@@ -2,13 +2,14 @@ extends layout
 
 
 block content
+    #{eventEnrolled}
     .text-center.h5 Let's enroll to the #{eventEnrolled.nameOfEvent}
 
     .p A little remenbering of the event :
 
     .text-secondary Enrolling to the gamers den need gift for the lords. in order to have better moment, it's pleaseant to have something to eat, smoke, drink !
     .text-left Do you want to bring gift ?
-    form(method='POST', target="/event/enroll", action="/event/enroll")
+    form(method='POST', action="/event/enroll")
         input(type='hidden', name='_csrf', value=_csrf)
         input(type='hidden', name='id', value=eventId)
         .form-group

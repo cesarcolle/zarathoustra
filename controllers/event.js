@@ -56,8 +56,6 @@ exports.getEvents = (req, res, next) => {
                 eventWeek.push(week[weekDay]);
             }
         });
-
-
         res.render("eventGame", {
             canManageCalendar: canManage,
             day: today.getDay().toString(),
@@ -101,6 +99,7 @@ exports.addEvent = (req, res, next) => {
     newEvent.save((err) => console.log(err));
     res.redirect("/event")
 };
+
 exports.getEnrollInTheEvent = (req, res, next) => {
     EventGame.find({_id : req.params.game}, (err, event) => {
         if (err) return err;
@@ -198,7 +197,10 @@ exports.postFeedBackEvent = (req, res, next) => {
   console.log("find the user to update ..." + idPlayer);
   User.find({email : idPlayer}, (err, player) => {
       if (err) return err;
-      var statusPlayer = player.status;
+      let statusPlayer = player.role;
+      if (!player.score)
+          player.score = 0;
+
       const newScore = player.score + scorePlayer;
       console.log("new score : " + newScore);
 
@@ -209,13 +211,13 @@ exports.postFeedBackEvent = (req, res, next) => {
 
       User.update({_id : idPlayer},{
           $incr : {score : scorePlayer},
-          status : statusPlayer
+          role : statusPlayer
       });
       console.log("remove the user from the game because his add feedback");
       // feedback provided.
       EventGame.update({_id : idGame}, {$pull : {players : {email : player.email}}});
-      console.log("redirect to ");
-      res.redirect("/event/feedback/")
+
+      res.redirect("/event/feedback/" + idGame)
   });
 };
 

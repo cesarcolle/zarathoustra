@@ -67,13 +67,15 @@ const User = require('./models/User');
 const user = new User({
     email: "user@user.com",
     password: "user",
-    role: "noob"
+    role: "pebron",
+    score : 0
 });
 
 const admin = new User({
     email: "admin@admin.com",
     password: "admin",
-    role: "admin"
+    role: "admin",
+    score : 0
 });
 
 admin.save((err) => {
@@ -85,8 +87,7 @@ user.save((err) => {
 /**
  * Create authorisation
  * */
-
-
+path.join(__dirname, 'public')
 /**
  * Express configuration.
  */

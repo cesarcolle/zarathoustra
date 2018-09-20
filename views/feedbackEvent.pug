@@ -20,10 +20,10 @@ block content
                                     .text-left
                                         .form-group
                                             .h8.label(for="rank") ranking
-                                                - var n = 0
+                                                - var n = 1
                                                 select(class='form-control', id='rank', name='rank')
                                                     option rank
-                                                    while n < gameDescription.playerComing
+                                                    while n <= gameDescription.playerComing
                                                         option #{n++}
 
                                             .h8.label(for='bonus') bonus
