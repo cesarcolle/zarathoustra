@@ -3,11 +3,12 @@ extends ../layout
 block content
   h3 Game information
   .pb-2.mt-2.mb-4.border-bottom
-    .row
-      .col-4.h6 Role
-      .col-4.h6 #{user.role} with a score of #{user.score}
-      .col-4
-        img(src= "images/pebron.png" )
+    .container
+      .row.align-items-center
+        .col-sm-1.col-md-4.col-lg-3 Role of the User
+        .col-sm-1.col-md-4.col-lg-3 #{user.role} with a score of #{user.score}
+        .col-sm-1.col-md-4.col-lg-3
+          img(src= "images/" + user.role + '.png', alt="rank", class="img-circle")
 
 
   h3 Profile Information

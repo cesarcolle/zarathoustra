@@ -1,26 +1,49 @@
 extends layout
 block content
+
     if canManageCalendar
-        a.btn.btn-primary(href='/event/add', role='button') Manage Calendar
-        a.btn.btn-primary(href='/event/feedback', role='button') Manage Feedback
+        .container
+            h3 Admin actions
+            .pb-2.mt-2.mb-4.border-bottom
+            .left
+                .row
+                    .col-lg-4
+                        a.btn(href='/event/add') Manage Calendar »
+                    .col-lg-4
+                        a.btn(href='/event/feedback') Manage Feedback »
+    .container-fluid
 
-    .card-columns
-        each event in eventsOfWeek
-            .card(style="max-width: 18rem;")
-                .h3.card-header.text-center #{event.date.getDate()}/#{event.date.getMonth() + 1}/#{event.date.getFullYear()}
-                each eventInDay in event.events
-                    .card
-                        .card-body
-                            .h5.card-title.text-center #{eventInDay.nameOfEvent}
-                            .h6.card-text Game name : #{eventInDay.gameName}
-                            .h6.card-text Place left : #{eventInDay.maxPlayer - eventInDay.playerComing}
-                            .h6.card-text localisation : #{eventInDay.localisation}
-                            .small.card-text #{eventInDay.information}
-                            .text-center
-                                if  eventEnrolled[eventInDay._id]
-                                    .text-secondary enrolled.
-                                else
-                                    a.btn.btn-primary(href='/event/enroll/' + eventInDay._id, role='button') enroll »
+        h3 Events
+        .pb-2.mt-2.mb-4.border-bottom
+        .card-columns.align-items-center
+            each event in eventsOfWeek
+                .card(style="max-width: 18rem;")
+                    .h3.card-header.text-center #{event.date.getDate()}/#{event.date.getMonth() + 1}/#{event.date.getFullYear()}
+                    each eventInDay in event.events
+                        .card
+                            .card-body.table-responsive
+                            .thread-light
+                                .row
+                                    .col Game name :
+                                    .col #{eventInDay.gameName}
+                                .row
+                                    .col Place left
+                                    .col #{eventInDay.maxPlayer - eventInDay.playerComing}
+                                .row
+                                    .col-lg-auto.card-text Localisation :  #{eventInDay.localisation}
+                                .row
+                                    .col Information : #{eventInDay.information}
 
-                                if canManageCalendar
-                                    a.btn.btn-primary(href='/event/game/' + eventInDay._id, role='button') finish »
+                                .card-footer
+                                    .text-center
+                                        .table-borderless.thead-light
+                                            .row
+                                                if  eventEnrolled[eventInDay._id]
+                                                    .col.small enrolled.
+                                                else
+                                                    .col
+                                                        a.card-link(href='/event/enroll/' + eventInDay._id, role='button') enroll »
+
+                                                if canManageCalendar
+                                                    .col
+                                                        a.card-link(href='/event/game/' + eventInDay._id, role='button') finish »
