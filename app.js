@@ -27,7 +27,7 @@ const upload = multer({dest: path.join(__dirname, 'uploads')});
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({path: '.env.example'});
+dotenv.load({path: '.env'});
 
 /**
  * Controllers (route handlers).
@@ -78,10 +78,20 @@ const admin = new User({
     score : 0
 });
 
+const trueUser = new User({
+   email : "caesar_14@hotmail.fr",
+   password : "pmolik",
+   role: "paysan",
+   score : 10
+});
+
 admin.save((err) => {
 
 });
 user.save((err) => {
+});
+
+trueUser.save((err) => {
 });
 
 /**

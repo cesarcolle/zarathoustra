@@ -9,8 +9,6 @@ services:
      - "8080:8080"
     environment:
      - MONGODB_URI=mongodb://mongo:27017/test
-     - SENDGRID_USER=zarathoustra
-     - SENDGRID_PASSWORD=joemanix83
      - ZARATHOUSTRA_MAIL=LesPlainesDeZarathoustra@gmail.com
     links:
      - mongo
